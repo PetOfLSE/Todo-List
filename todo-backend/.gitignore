@@ -146,6 +146,12 @@ gradle-app.setting
 .DS_Store
 
 # Ignore sensitive or environment-specific files
+application.properties
+
+# Ignore Docker Compose file
+docker-compose.yaml
+
+# Ignore sensitive or environment-specific files
 # application.properties should not be excluded from version control
 # unless it contains sensitive or environment-specific information.
 # Uncomment the following line if necessary
