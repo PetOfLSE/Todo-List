@@ -145,9 +145,6 @@ gradle-app.setting
 # Ignore macOS system files
 .DS_Store
 
-# Ignore sensitive or environment-specific files
-application.properties
-
 # Ignore Docker Compose file
 docker-compose.yaml
 
