@@ -154,6 +154,9 @@ docker-compose.yaml
 # Ignore sensitive or environment-specific files
 /application.properties
 
+# Ignore application.properties in the resources folder
+/src/main/resources/application.properties
+
 # Ignore sensitive or environment-specific files
 # application.properties should not be excluded from version control
 # unless it contains sensitive or environment-specific information.
