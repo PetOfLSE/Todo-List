@@ -1,14 +1,12 @@
 package com.example.todo.user.model.entity;
 
 import com.example.todo.common.enums.Gender;
-import com.example.todo.common.enums.Role;
 import com.example.todo.todo.model.entity.TodoEntity;
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -35,12 +33,14 @@ public class UserEntity {
     @Column(nullable = false, name = "email", unique = true)
     private String email;
 
-    @Enumerated(EnumType.STRING)
-    private Role role;
+    @Column(nullable = false, name = "name")
+    private String name;
 
     @Enumerated(EnumType.STRING)
+    @Column(name = "gender")
     private Gender gender;
 
+    @Column(name = "register_at")
     private LocalDateTime registerAt;
 
     @OneToMany(mappedBy = "user")
