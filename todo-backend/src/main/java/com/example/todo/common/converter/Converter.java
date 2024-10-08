@@ -1,5 +1,6 @@
 package com.example.todo.common.converter;
 
+import com.example.todo.common.enums.Role;
 import com.example.todo.user.controller.request.RegisterRequest;
 import com.example.todo.user.model.entity.UserEntity;
 import lombok.RequiredArgsConstructor;
@@ -20,6 +21,7 @@ public class Converter {
                 .password(passwordEncoder.encode(request.getPassword()))
                 .name(request.getName())
                 .email(request.getEmail())
+                .role(Role.ROLE_USER)
                 .gender(request.getGender())
                 .registerAt(LocalDateTime.now())
                 .build();
