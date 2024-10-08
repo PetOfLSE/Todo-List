@@ -1,6 +1,7 @@
 package com.example.todo.user.model.entity;
 
 import com.example.todo.common.enums.Gender;
+import com.example.todo.common.enums.Role;
 import com.example.todo.todo.model.entity.TodoEntity;
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
@@ -42,6 +43,10 @@ public class UserEntity {
 
     @Column(name = "register_at")
     private LocalDateTime registerAt;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "role")
+    private Role role;
 
     @OneToMany(mappedBy = "user")
     private List<TodoEntity> todos;
