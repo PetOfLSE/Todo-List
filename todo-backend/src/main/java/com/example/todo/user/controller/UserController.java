@@ -1,5 +1,6 @@
 package com.example.todo.user.controller;
 
+import com.example.todo.user.controller.request.LoginRequest;
 import com.example.todo.user.controller.request.RegisterRequest;
 import com.example.todo.user.model.entity.UserEntity;
 import com.example.todo.user.service.UserService;
@@ -24,9 +25,16 @@ public class UserController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "회원가입 성공시 200")
     })
+
     @PostMapping("/register")
     public ResponseEntity<?> register(@RequestBody RegisterRequest registerRequest) {
         UserEntity register = userService.register(registerRequest);
         return ResponseEntity.ok(register);
+    }
+
+    @PostMapping("/login")
+    public ResponseEntity<?> login(@RequestBody LoginRequest loginRequest) {
+//        return ResponseEntity.ok(login);
+        return null;
     }
 }
