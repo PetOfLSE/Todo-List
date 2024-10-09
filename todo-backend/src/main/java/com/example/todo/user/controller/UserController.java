@@ -1,5 +1,6 @@
 package com.example.todo.user.controller;
 
+import com.example.todo.common.security.jwt.JwtRefreshDto;
 import com.example.todo.common.security.jwt.JwtResponseDto;
 import com.example.todo.user.controller.request.LoginRequest;
 import com.example.todo.user.controller.request.RegisterRequest;
@@ -8,14 +9,12 @@ import com.example.todo.user.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
@@ -45,9 +44,21 @@ public class UserController {
         JwtResponseDto login = userService.login(loginRequest);
 
         response.setHeader("Authorization", "Bearer " + login.getAccessToken());
-        response.setHeader("RefreshToken", login.getRefreshToken());
+        response.setHeader("Refresh-Token", login.getRefreshToken());
 
         return ResponseEntity.ok(login);
+    }
+
+    @Operation(summary = "Access token 재발급")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "성공시 200 반환")
+    })
+    @PostMapping("/refresh")
+    public ResponseEntity<?> refresh(HttpServletRequest request, HttpServletResponse response) {
+        JwtRefreshDto accessToken = userService.refresh(request);
+
+        response.setHeader("Authorization", "Bearer " + accessToken);
+        return ResponseEntity.ok(accessToken);
     }
 
 }
