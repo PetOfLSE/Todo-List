@@ -1,5 +1,6 @@
 package com.example.todo.common.security.jwt;
 
+import com.example.todo.common.security.custom.CustomUserDetails;
 import com.example.todo.user.model.entity.UserEntity;
 import com.example.todo.user.model.repository.UserRepository;
 import io.jsonwebtoken.Claims;
@@ -43,6 +44,7 @@ public class JwtUtil {
         var key = Keys.hmacShaKeyFor(secret.getBytes());
 
         Claims claims = Jwts.claims();
+        claims.put("id", user.getId());
         claims.put("auth", user.getRole().name());
         claims.put("exp", _expired);
 
@@ -103,15 +105,16 @@ public class JwtUtil {
     public Authentication getAuthentication(String token) {
         Claims claims = parseToken(token);
         String subject = claims.getSubject();
-        long id = Long.parseLong(subject);
+        Long id = Long.parseLong(subject);
 
         UserEntity user = userRepository.findById(id).orElseThrow(() -> new RuntimeException("User not found"));
         log.info("user : {} -> JwtUtil", user);
+
         List<SimpleGrantedAuthority> auth = Arrays.stream(new String[]{claims.get("auth").toString()})
                 .map(SimpleGrantedAuthority::new)
                 .collect(Collectors.toList());
 
-        User principal = new User(subject, "", auth);
+        CustomUserDetails principal = new CustomUserDetails(user);
 
         return new UsernamePasswordAuthenticationToken(principal, token, auth);
     }
