@@ -157,10 +157,6 @@ docker-compose.yaml
 # Ignore other application.properties files
 **/application.properties
 
-# 상위 디렉토리의 .DS_Store 파일
-# Ignore the .DS_Store file in the parent directory
-/backend/.DS_Store
+../.idea
 
-# 상위 디렉토리의 .idea 디렉토리
-# Ignore the .idea directory in the parent directory
-/backend/.idea
+../.DS_Store
