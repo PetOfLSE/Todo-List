@@ -126,7 +126,7 @@ gradle-app.setting
 # Avoid ignoring Gradle wrapper jar file (.jar files are usually ignored)
 !gradle-wrapper.jar
 
-# Avoid ignore Gradle wrappper properties
+# Avoid ignore Gradle wrapper properties
 !gradle-wrapper.properties
 
 # Cache of project
@@ -146,36 +146,21 @@ gradle-app.setting
 .DS_Store
 
 # Ignore sensitive or environment-specific files
-application.properties
+/application.properties
 
 # Ignore Docker Compose file
 docker-compose.yaml
 
-# Ignore sensitive or environment-specific files
-/application.properties
-
 # Ignore application.properties in the resources folder
 /src/main/resources/application.properties
 
+# Ignore other application.properties files
 **/application.properties
 
 # 상위 디렉토리의 .DS_Store 파일
+# Ignore the .DS_Store file in the parent directory
 ../.DS_Store
 
 # 상위 디렉토리의 .idea 디렉토리
+# Ignore the .idea directory in the parent directory
 ../.idea/
-
-# Ignore .DS_Store file in the parent directory
-/.DS_Store
-
-# Ignore .idea directory in the parent directory
-/.idea/
-
-# Ignore sensitive or environment-specific files
-# application.properties should not be excluded from version control
-# unless it contains sensitive or environment-specific information.
-# Uncomment the following line if necessary
-# application.properties
-
-# Ignore Docker Compose file
-# Uncomment the following line if you want to exclude it from version control
