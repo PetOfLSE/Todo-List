@@ -32,8 +32,10 @@ public class JwtUtil {
     @Value("${jwt.secret}")
     private String secret;
     
-    public String generateToken(Long id) {
-        UserEntity user = userRepository.findById(id).orElseThrow(() -> new RuntimeException("User not found"));
+    public String generateToken(Authentication authentication) {
+        String name = authentication.getName();
+        log.info("name : {}", name);
+        UserEntity user = userRepository.findByName(name);
 
         LocalDateTime expired = LocalDateTime.now().plusMinutes(30);
         var _expired = Date.from(expired.atZone(ZoneId.systemDefault()).toInstant());
@@ -46,13 +48,14 @@ public class JwtUtil {
         return Jwts.builder()
                 .signWith(key, SignatureAlgorithm.HS256)
                 .setExpiration(_expired)
-                .setSubject(id.toString())
+                .setSubject(user.getId().toString())
                 .setClaims(claims)
                 .compact();
     }
 
-    public String generateRefreshToken(Long id) {
-        UserEntity user = userRepository.findById(id).orElseThrow(() -> new RuntimeException("User not found"));
+    public String generateRefreshToken(Authentication authentication) {
+        String name = authentication.getName();
+        UserEntity user = userRepository.findByName(name);
 
         LocalDateTime expired = LocalDateTime.now().plusDays(1);
         var _expired = Date.from(expired.atZone(ZoneId.systemDefault()).toInstant());
