@@ -1,5 +1,6 @@
 package com.example.todo.user.controller;
 
+import com.example.todo.common.security.jwt.JwtResponseDto;
 import com.example.todo.user.controller.request.LoginRequest;
 import com.example.todo.user.controller.request.RegisterRequest;
 import com.example.todo.user.model.entity.UserEntity;
@@ -25,16 +26,20 @@ public class UserController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "회원가입 성공시 200")
     })
-
     @PostMapping("/register")
     public ResponseEntity<?> register(@RequestBody RegisterRequest registerRequest) {
         UserEntity register = userService.register(registerRequest);
         return ResponseEntity.ok(register);
     }
 
+    @Operation(summary = "로그인")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "로그인 성공시 200")
+    })
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody LoginRequest loginRequest) {
-//        return ResponseEntity.ok(login);
-        return null;
+
+        JwtResponseDto login = userService.login(loginRequest);
+        return ResponseEntity.ok(login);
     }
 }
