@@ -35,7 +35,8 @@ public class JwtUtil {
     public String generateToken(Authentication authentication) {
         String name = authentication.getName();
         log.info("name : {}", name);
-        UserEntity user = userRepository.findByName(name);
+        UserEntity user = userRepository.findByUserId(name);
+        log.info("user : {}", user);
 
         LocalDateTime expired = LocalDateTime.now().plusMinutes(30);
         var _expired = Date.from(expired.atZone(ZoneId.systemDefault()).toInstant());
@@ -55,7 +56,9 @@ public class JwtUtil {
 
     public String generateRefreshToken(Authentication authentication) {
         String name = authentication.getName();
-        UserEntity user = userRepository.findByName(name);
+
+        UserEntity user = userRepository.findByUserId(name);
+        log.info("user : {}", user);
 
         LocalDateTime expired = LocalDateTime.now().plusDays(1);
         var _expired = Date.from(expired.atZone(ZoneId.systemDefault()).toInstant());
@@ -103,6 +106,7 @@ public class JwtUtil {
         long id = Long.parseLong(subject);
 
         UserEntity user = userRepository.findById(id).orElseThrow(() -> new RuntimeException("User not found"));
+        log.info("user : {} -> JwtUtil", user);
         List<SimpleGrantedAuthority> auth = Arrays.stream(new String[]{claims.get("auth").toString()})
                 .map(SimpleGrantedAuthority::new)
                 .collect(Collectors.toList());
