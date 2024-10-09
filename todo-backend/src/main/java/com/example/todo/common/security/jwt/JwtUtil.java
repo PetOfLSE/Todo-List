@@ -77,10 +77,6 @@ public class JwtUtil {
                 .compact();
     }
 
-    public String getUserId(String token){
-        return parseToken(token).getSubject();
-    }
-
     public boolean validateToken(String token) {
         var key = Keys.hmacShaKeyFor(secret.getBytes());
 
