@@ -67,6 +67,7 @@ public class JwtUtil {
         var key = Keys.hmacShaKeyFor(secret.getBytes());
 
         Claims claims = Jwts.claims();
+        claims.put("id", user.getId());
         claims.put("auth", user.getRole().name());
         claims.put("exp", _expired);
 
