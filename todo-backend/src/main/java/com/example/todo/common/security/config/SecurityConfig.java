@@ -29,17 +29,18 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        http
-                .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
 
         http
                 .userDetailsService(customUserDetailsService);
 
         http
+                .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
+
+        http
                 .authorizeRequests(auth -> {
                     auth.requestMatchers("/**").permitAll()
-                            .requestMatchers("/swagger", "/swagger-ui.html", "/swagger-ui/**", "/api-docs", "/api-docs/**", "/v3/api-docs/**").permitAll()
                             .requestMatchers("/api/user/register", "api/user/login").permitAll()
+                            .requestMatchers("/swagger", "/swagger-ui.html", "/swagger-ui/**", "/api-docs", "/api-docs/**", "/v3/api-docs/**").permitAll()
                             .anyRequest().authenticated();
                 });
 
