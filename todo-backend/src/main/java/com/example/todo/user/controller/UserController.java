@@ -8,6 +8,7 @@ import com.example.todo.user.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
@@ -39,9 +40,14 @@ public class UserController {
             @ApiResponse(responseCode = "200", description = "로그인 성공시 200")
     })
     @PostMapping("/login")
-    public ResponseEntity<?> login(@RequestBody LoginRequest loginRequest) {
+    public ResponseEntity<?> login(@RequestBody LoginRequest loginRequest, HttpServletResponse response) {
         log.info("login request: {}", loginRequest);
         JwtResponseDto login = userService.login(loginRequest);
+
+        response.setHeader("Authorization", "Bearer " + login.getAccessToken());
+        response.setHeader("refreshToken", login.getRefreshToken());
+
         return ResponseEntity.ok(login);
     }
+
 }
