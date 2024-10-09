@@ -31,11 +31,15 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
                 .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
+
+        http
+                .userDetailsService(customUserDetailsService);
+
         http
                 .authorizeRequests(auth -> {
                     auth.requestMatchers("/**").permitAll()
                             .requestMatchers("/swagger", "/swagger-ui.html", "/swagger-ui/**", "/api-docs", "/api-docs/**", "/v3/api-docs/**").permitAll()
-                            .requestMatchers("/api/user/**").permitAll()
+                            .requestMatchers("/api/user/register", "api/user/login").permitAll()
                             .anyRequest().authenticated();
                 });
 
@@ -55,9 +59,6 @@ public class SecurityConfig {
 
         http
                 .formLogin(AbstractHttpConfigurer::disable);
-
-        http
-                .userDetailsService(customUserDetailsService);
 
         return http.build();
     }
