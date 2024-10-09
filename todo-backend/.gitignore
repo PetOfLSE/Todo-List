@@ -165,6 +165,12 @@ docker-compose.yaml
 # 상위 디렉토리의 .idea 디렉토리
 ../.idea/
 
+# Ignore .DS_Store file in the parent directory
+/.DS_Store
+
+# Ignore .idea directory in the parent directory
+/.idea/
+
 # Ignore sensitive or environment-specific files
 # application.properties should not be excluded from version control
 # unless it contains sensitive or environment-specific information.
