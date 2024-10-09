@@ -45,7 +45,7 @@ public class UserController {
         JwtResponseDto login = userService.login(loginRequest);
 
         response.setHeader("Authorization", "Bearer " + login.getAccessToken());
-        response.setHeader("refreshToken", login.getRefreshToken());
+        response.setHeader("RefreshToken", login.getRefreshToken());
 
         return ResponseEntity.ok(login);
     }
