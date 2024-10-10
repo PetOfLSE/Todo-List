@@ -51,4 +51,5 @@ public class UserEntity {
 
     @OneToMany(mappedBy = "user")
     private List<TodoEntity> todos;
+
 }
