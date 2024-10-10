@@ -29,8 +29,12 @@ public class TodoController {
     @Parameter(name = "id", description = "User id")
     @PreAuthorize("hasRole('ROLE_USER')")
     @PostMapping("/add/{id}")
-    public ResponseEntity<?> add(@PathVariable Long id, @RequestBody TodoAddRequest request){
-        TodoResponse add = todoService.add(id, request);
+    public ResponseEntity<?> add(
+            @PathVariable Long id,
+            @RequestBody TodoAddRequest request,
+            HttpServletRequest httpServletRequest
+    ){
+        TodoResponse add = todoService.add(id, request, httpServletRequest);
         return ResponseEntity.ok(add);
     }
 
