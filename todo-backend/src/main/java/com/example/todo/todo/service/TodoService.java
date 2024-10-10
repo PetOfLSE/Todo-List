@@ -32,7 +32,7 @@ public class TodoService {
         if(header != null && header.startsWith("Bearer ")) {
             String token = header.substring(7);
             Claims claims = jwtUtil.parseToken(token);
-            long userId = Long.parseLong(String.valueOf(claims.get("id", Integer.class)));
+            Long userId = Long.parseLong(String.valueOf(claims.get("id", Integer.class)));
 
             UserEntity user = userRepository.findById(id).orElseThrow(() -> new RuntimeException("User not found"));
 
@@ -43,9 +43,11 @@ public class TodoService {
                 TodoResponse response = TodoResponse.toTodoResponse(save);
                 return response;
             }else{
+                log.error("사용자가 다릅니다.");
                 throw new RuntimeException("사용자가 다릅니다.");
             }
         }else{
+            log.error("토큰이 없습니다.");
             throw new RuntimeException("토큰이 없습니다.");
         }
     }
@@ -76,6 +78,7 @@ public class TodoService {
 
                 }
             }else{
+                log.error("사용자가 다릅니다.");
                 throw new RuntimeException("사용자가 다릅니다.");
             }
         }
@@ -104,14 +107,38 @@ public class TodoService {
                             .content(save.getContent())
                             .build();
                 }else{
+                    log.error("완료된 todo 입니다.");
                     throw new RuntimeException("완료된 todo 입니다.");
                 }
             }else{
+                log.error("사용자가 다릅니다.");
                 throw new RuntimeException("사용자가 다릅니다.");
             }
 
         }else{
+            log.error("토큰이 없습니다.");
             throw new RuntimeException("토큰이 없습니다.");
         }
+    }
+
+    public boolean delete(Long id, HttpServletRequest request) {
+        String header = request.getHeader("Authorization");
+        if(header != null && header.startsWith("Bearer ")) {
+            String token = header.substring(7);
+            Claims claims = jwtUtil.parseToken(token);
+            Long userId = Long.parseLong(String.valueOf(claims.get("id", Integer.class)));
+            UserEntity user = userRepository.findById(userId).orElseThrow(() -> new RuntimeException("User not found"));
+
+            TodoEntity todo = todoRepository.findById(id).orElseThrow(() -> new RuntimeException("Todo Not Found"));
+            if(user.getId() == todo.getUser().getId()){
+                todoRepository.delete(todo);
+                return true;
+            }else{
+                log.error("사용자가 다릅니다.");
+                return false;
+            }
+        }
+        log.error("토큰이 없습니다.");
+        return false;
     }
 }
