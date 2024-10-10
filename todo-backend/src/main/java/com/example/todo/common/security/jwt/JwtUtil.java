@@ -101,8 +101,7 @@ public class JwtUtil {
 
     public Authentication getAuthentication(String token) {
         Claims claims = parseToken(token);
-        String subject = claims.getSubject();
-        Long id = Long.parseLong(subject);
+        Long id = Long.parseLong(String.valueOf(claims.get("id", Integer.class)));
 
         UserEntity user = userRepository.findById(id).orElseThrow(() -> new RuntimeException("User not found"));
         log.info("user : {} -> JwtUtil", user);
