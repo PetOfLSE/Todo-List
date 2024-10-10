@@ -27,14 +27,27 @@ public class TodoService {
     private final JwtUtil jwtUtil;
 
     @Transactional
-    public TodoResponse add(Long id, TodoAddRequest request) {
-        UserEntity user = userRepository.findById(id).orElseThrow(() -> new RuntimeException("User not found"));
+    public TodoResponse add(Long id, TodoAddRequest request, HttpServletRequest httpServletRequest) {
+        String header = httpServletRequest.getHeader("Authorization");
+        if(header != null && header.startsWith("Bearer ")) {
+            String token = header.substring(7);
+            Claims claims = jwtUtil.parseToken(token);
+            long userId = Long.parseLong(String.valueOf(claims.get("id", Integer.class)));
 
-        TodoEntity todoEntity = TodoAddRequest.toTodoEntity(request, user);
-        TodoEntity save = todoRepository.save(todoEntity);
+            UserEntity user = userRepository.findById(id).orElseThrow(() -> new RuntimeException("User not found"));
 
-        TodoResponse response = TodoResponse.toTodoResponse(save);
-        return response;
+            if(userId == user.getId()) {
+                TodoEntity todoEntity = TodoAddRequest.toTodoEntity(request, user);
+                TodoEntity save = todoRepository.save(todoEntity);
+
+                TodoResponse response = TodoResponse.toTodoResponse(save);
+                return response;
+            }else{
+                throw new RuntimeException("사용자가 다릅니다.");
+            }
+        }else{
+            throw new RuntimeException("토큰이 없습니다.");
+        }
     }
 
     public TodoResponse patch(Long id, HttpServletRequest request, TodoModifyRequest modifyRequest) {
