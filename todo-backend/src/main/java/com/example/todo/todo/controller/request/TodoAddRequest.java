@@ -16,14 +16,12 @@ public class TodoAddRequest {
 
     private String content;
 
-    private Boolean complete;
-
     public static TodoEntity toTodoEntity(TodoAddRequest request, UserEntity user){
 
         return TodoEntity.builder()
                 .content(request.getContent())
                 .createAt(LocalDateTime.now())
-                .complete(request.getComplete())
+                .complete(false)
                 .user(user)
                 .completeAt(null)
                 .build();
