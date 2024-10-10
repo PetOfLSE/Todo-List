@@ -89,7 +89,7 @@ public class UserService {
         throw new RuntimeException("UserService refresh Fail");
     }
 
-    public static UserEntity toUserEntity(RegisterRequest request) {
+    public UserEntity toUserEntity(RegisterRequest request) {
         return UserEntity.builder()
                 .userId(request.getUserId())
                 .password(passwordEncoder.encode(request.getPassword()))
