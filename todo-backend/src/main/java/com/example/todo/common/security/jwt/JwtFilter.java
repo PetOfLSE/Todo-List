@@ -30,7 +30,7 @@ public class JwtFilter extends GenericFilterBean {
 
         String header = request.getHeader("Authorization");
         log.info("header : {}", header);
-        if(header != null && !header.startsWith("Bearer ")) {
+        if(header != null && header.startsWith("Bearer ")) {
             String token = header.substring(7);
             log.info("token : {}", token);
 
