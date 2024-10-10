@@ -49,7 +49,9 @@ public class UserEntity {
     @Column(name = "role")
     private Role role;
 
-    @OneToMany(mappedBy = "user")
+    // EAGER 은 UserEntity 가 로드될때마다 todos 를 가져옴 성능에 영향을 미칠 수 있음
+    // TODO 수정 필요
+    @OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
     private List<TodoEntity> todos;
 
 }
