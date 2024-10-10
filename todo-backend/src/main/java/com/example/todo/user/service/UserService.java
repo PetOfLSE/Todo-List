@@ -79,6 +79,7 @@ public class UserService {
                             .accessToken(accessToken)
                             .build();
                 } else {
+                    log.error("Refresh Token 만료");
                     throw new RuntimeException("Refresh Token 만료");
                 }
             }
@@ -86,6 +87,7 @@ public class UserService {
             log.info("UserService refresh Fail : {}", e.getMessage());
         }
 
+        log.error("UserService refresh 실패 ");
         throw new RuntimeException("UserService refresh Fail");
     }
 
