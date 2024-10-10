@@ -29,7 +29,7 @@ public class UserService {
     private final UserRepository userRepository;
     private final AuthenticationManager authenticationManager;
     private final JwtUtil jwtUtil;
-    private static PasswordEncoder passwordEncoder;
+    private final PasswordEncoder passwordEncoder;
 
     public UserEntity register(RegisterRequest registerRequest) {
         UserEntity user = toUserEntity(registerRequest);
