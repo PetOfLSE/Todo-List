@@ -34,6 +34,15 @@ public class TodoController {
         return ResponseEntity.ok(add);
     }
 
+    @Operation(summary = "Todo 완료")
+    @Parameter(name = "id", description = "Todo id")
+    @ApiResponse(responseCode = "200", description = "성공시 200 반환")
+    @PostMapping("/complete/{id}")
+    public ResponseEntity<?> complete(@PathVariable Long id, HttpServletRequest request){
+        TodoResponse completes = todoService.completes(id, request);
+        return ResponseEntity.ok(completes);
+    }
+
     @Operation(summary = "할일 수정")
     @Parameter(name = "id", description = "Todo id")
     @ApiResponse(responseCode = "200", description = "성공시 200 반환")
