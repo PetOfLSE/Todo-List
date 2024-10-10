@@ -1,6 +1,6 @@
 package com.example.todo.user.service;
 
-import com.example.todo.common.converter.Converter;
+import com.example.todo.common.enums.Role;
 import com.example.todo.common.security.jwt.JwtRefreshDto;
 import com.example.todo.common.security.jwt.JwtResponseDto;
 import com.example.todo.common.security.jwt.JwtUtil;
@@ -15,8 +15,10 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 
 @Service
@@ -25,12 +27,12 @@ import java.util.Date;
 public class UserService {
 
     private final UserRepository userRepository;
-    private final Converter converter;
     private final AuthenticationManager authenticationManager;
     private final JwtUtil jwtUtil;
+    private static PasswordEncoder passwordEncoder;
 
     public UserEntity register(RegisterRequest registerRequest) {
-        UserEntity user = converter.toUserEntity(registerRequest);
+        UserEntity user = toUserEntity(registerRequest);
         UserEntity save = userRepository.save(user);
 
         return save;
@@ -85,5 +87,17 @@ public class UserService {
         }
 
         throw new RuntimeException("UserService refresh Fail");
+    }
+
+    public static UserEntity toUserEntity(RegisterRequest request) {
+        return UserEntity.builder()
+                .userId(request.getUserId())
+                .password(passwordEncoder.encode(request.getPassword()))
+                .name(request.getName())
+                .email(request.getEmail())
+                .role(Role.ROLE_USER)
+                .gender(request.getGender())
+                .registerAt(LocalDateTime.now())
+                .build();
     }
 }
