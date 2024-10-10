@@ -15,6 +15,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
+
 @Service
 @RequiredArgsConstructor
 @Slf4j
@@ -65,5 +67,38 @@ public class TodoService {
             }
         }
         return null;
+    }
+
+    public TodoResponse completes(Long id, HttpServletRequest request) {
+        String header = request.getHeader("Authorization");
+        if(header != null && header.startsWith("Bearer ")) {
+            String token = header.substring(7);
+            Claims claims = jwtUtil.parseToken(token);
+            Long userId = Long.parseLong(String.valueOf(claims.get("id", Integer.class)));
+
+            TodoEntity todo = todoRepository.findById(id).orElseThrow(() -> new RuntimeException("Todo Not Found"));
+            if(todo.getUser().getId() == userId){
+                if(!todo.getComplete()){
+                    todo.setComplete(true);
+                    todo.setCompleteAt(LocalDateTime.now());
+                    TodoEntity save = todoRepository.save(todo);
+
+                    return TodoResponse.builder()
+                            .id(save.getId())
+                            .complete(save.getComplete())
+                            .completeAt(save.getCompleteAt())
+                            .createAt(save.getCreateAt())
+                            .content(save.getContent())
+                            .build();
+                }else{
+                    throw new RuntimeException("완료된 todo 입니다.");
+                }
+            }else{
+                throw new RuntimeException("사용자가 다릅니다.");
+            }
+
+        }else{
+            throw new RuntimeException("토큰이 없습니다.");
+        }
     }
 }
