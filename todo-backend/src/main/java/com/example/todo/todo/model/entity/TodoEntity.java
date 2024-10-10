@@ -24,11 +24,8 @@ public class TodoEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false, name = "title")
-    private String title;
-
-    @Column(nullable = false, name = "body")
-    private String body;
+    @Column(nullable = false, name = "content")
+    private String content;
 
     @Column(nullable = false, name = "complete_at")
     private LocalDateTime completeAt;
