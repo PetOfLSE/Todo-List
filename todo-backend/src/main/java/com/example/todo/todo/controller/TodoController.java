@@ -38,7 +38,7 @@ public class TodoController {
         return ResponseEntity.ok(add);
     }
 
-    @Operation(summary = "Todo 완료")
+    @Operation(summary = "할일 완료")
     @Parameter(name = "id", description = "Todo id")
     @ApiResponse(responseCode = "200", description = "성공시 200 반환")
     @PostMapping("/complete/{id}")
